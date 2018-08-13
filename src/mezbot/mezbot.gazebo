@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<robot>
+
+<gazebo reference="base_link">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="base_link_back_Vsupport">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="ZED_arm">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="base_link_back_Vsupport_scanner">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="base_link_frame_scanner_arm">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="battery">
+	<material>Gazebo/Black</material>
+</gazebo>
+
+<gazebo reference="pan_servo">
+	<material>Gazebo/Orange</material>
+</gazebo>
+
+<gazebo reference="tilt_servo">
+	<material>Gazebo/Orange</material>
+</gazebo>
+
+<gazebo reference="ZED_cam_link">
+	<material>Gazebo/Yellow</material>
+</gazebo>
+
+<gazebo reference="Green">
+	<material>Gazebo/Green</material>
+</gazebo>
+
+<gazebo reference="FL_strut">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="FR_strut">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="BL_strut">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="BR_strut">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="FL_pivot">
+	<material>Gazebo/Blue</material>
+</gazebo>
+
+<gazebo reference="FR_pivot">
+	<material>Gazebo/Blue</material>
+</gazebo>
+
+<gazebo reference="BL_pivot">
+	<material>Gazebo/Blue</material>
+</gazebo>
+
+<gazebo reference="BR_pivot">
+	<material>Gazebo/Blue</material>
+</gazebo>
+
+<gazebo reference="FL_pivotextension">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="FR_pivotextension">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="BL_pivotextension">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="BR_pivotextension">
+	<material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="FL_motorbracket">
+	<material>Gazebo/Purple</material>
+</gazebo>
+
+<gazebo reference="FR_motorbracket">
+	<material>Gazebo/Purple</material>
+</gazebo>
+
+<gazebo reference="BL_motorbracket">
+	<material>Gazebo/Purple</material>
+</gazebo>
+
+<gazebo reference="BR_motorbracket">
+	<material>Gazebo/Purple</material>
+</gazebo>
+
+<gazebo reference="FL_wheel">
+	<material>Gazebo/White</material>
+</gazebo>
+
+<gazebo reference="FR_wheel">
+	<material>Gazebo/White</material>
+</gazebo>
+
+<gazebo reference="BL_wheel">
+	<material>Gazebo/White</material>
+</gazebo>
+
+<gazebo reference="BR_wheel">
+	<material>Gazebo/White</material>
+</gazebo>
+
+
+
+</robot>

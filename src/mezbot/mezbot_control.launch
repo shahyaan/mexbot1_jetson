@@ -1,0 +1,103 @@
+<launch>
+	<!--robot pose -->
+	<!--arg name="x" default="0"/-->
+	<!--arg name="y" default="0"/-->
+
+	<!-- Load the mezbot URDF model into the parameter server -->
+	<!--param name="robot_description" textfile="$(find mezbot)/mezbot.urdf" /-->
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find mezbot)/mezbot.urdf.xacro'" />
+	
+	<!-- Start Gazebo with an empty world -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="headless" value="true" />
+		<arg name="gui" value="false" />
+		<!--arg name="world_name" value="$(find mezbot)/worlds/turtlebot_playground.world" /-->
+	</include>
+	
+	<!-- Spawn a mezbot in Gazebo, taking the description from the parameter server -->
+	<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-x $(arg x) -y $(arg y) -z 0.2 -R 0 -P 0 -Y 0 -param robot_description -urdf -model mezbot -world world" /-->
+
+	<!-- Load joint controller configurations from YAML file to parameter server -->
+	<!--rosparam file="$(find mezbot)/drive_control.yaml" command="load"/-->
+
+	<!--load the controllers -->
+	<!--node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="mezbot_joint_state_controller mezbot_velocity_controller" /-->
+
+	<!--load the ZED camera node (use when implementing real robot)-->
+	<include file="$(find zed_wrapper)/launch/zed_camera.launch" />
+	<!--include file="$(find zed_wrapper)/launch/zed_rtabmap.launch" /-->
+
+	<!--Load the Razor 9dof IMU-->
+	<include file="$(find razor_imu_9dof)/launch/razor-pub.launch" />
+
+	<!--load mezbot_odom node-->
+	<node name="mezbot_odom_node" pkg="mezbot" type="mezbot_odom_node" output="screen"/>
+
+	<!--load rosserial_python node to connect arduino to ros and get /wheel_odom -->
+	<node name="arduino_serial_node" pkg="rosserial_python" type="serial_node.py" output="screen">
+		<param name="port" value="/dev/arduino" />
+		<param name="baud" value="57600" />
+	</node> 
+
+	<!--load depthimage_to_lasercan node for navigation stack-->
+	<node name="depthimage_to_laserscan" pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" >
+		<remap from="image" to="/depth/depth_registered" />
+		<remap from="scan" to="depth_scan" />
+		<param name="scan_height" value="3"/>
+		<param name="output_frame_id" value="base_link" />
+		<param name="range_min" value="0.25" />
+	</node>
+	
+	<!-- robot_pose_ekf node -->
+	<!--node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf" >
+		<param name="output_frame" value="odom" />
+		<param name="freq" value="30.0" />
+		<param name="sensor_timeout" value="1.0" />
+		<param name="odom_used" value="true" />
+		<param name="imu_used" value="true" />
+		<param name="vo_used" value="false" />
+		<param name="debug" value="false" />
+		<param name="self_diagnose" value="false" />
+	</node-->
+
+
+	<!--Mapping node with RTABMAP -->
+	<!--node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" /-->
+	
+	<!--mapping with Gmapping -->
+	<node name="gmapping" pkg="gmapping" type="slam_gmapping" output="screen" >
+		<remap from="scan" to="depth_scan" />
+		<param name="odom_frame" value="odom" />
+		<param name="base_frame" value="base_link" />
+	</node>
+
+	<!--Navigation -->
+	<node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen" />
+		<rosparam file="$(find mezbot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find mezbot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find mezbot)/config/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find mezbot)/config/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find mezbot)/config/base_local_planner_params.yaml" command="load" />
+	
+
+	<!-- convert joint states to TF transforms for rviz, etc -->
+	<!--arg name="use_tf_static" default="false"/--> 
+  	
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen" />
+  		<!--param name="use_tf_static" value="$(arg use_tf_static)"/-->
+  	<!--/node-->
+
+  	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" >
+  		  		<param name="use_gui" value="false" />
+  	</node>
+
+	<!--node pkg="tf" type="static_transform_publisher" name="odom_base_broadcaster" args="0 0 0 0 0 0 1 base_footprint base_link 100" /-->
+	
+	<!--Zed camera output needs to be rotated by -90 degrees in x and z -->
+	<node pkg="tf" type="static_transform_publisher" name="ZED_cam_rotator" args="0 0 0 -1.57 0 -1.57 ZED_arm ZED_cam_link 100" />
+
+    	<!--machine name="minibrain" address="minibrain" env-loader="/home/shahyaan/catkin_ws/env.sh" user="shahyaan" /-->
+
+	<!--node name="rviz" pkg="rviz" type="rviz" machine="minibrain"/-->
+
+</launch>

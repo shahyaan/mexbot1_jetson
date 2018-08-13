@@ -1,0 +1,2 @@
+depthimage_to_laserscan:image_common/camera_calibration_parsers:image_common/camera_info_manager:image_common/image_common:image_common/image_transport:image_common/polled_camera:imu_tools/imu_complementary_filter:imu_tools/imu_filter_madgwick:imu_tools/imu_tools:imu_tools/rviz_imu_plugin:mezbot:razor_imu_9dof:vision_opencv/cv_bridge:vision_opencv/image_geometry:vision_opencv/opencv_tests:vision_opencv/vision_opencv:zed-ros-wrapper
+-DCATKIN_DEVEL_PREFIX=/home/nvidia/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/nvidia/catkin_ws/install -G Unix Makefiles

@@ -1,0 +1,19 @@
+obstacle_range: 5         #maximum distance of obstacle being placed within costmap 
+raytrace range: 6.0         #range that the robot will try to clear out space around it
+
+# footprint of robot around center=(0,0)
+# robot is 0.506m wide and 0.43m long
+footprint: [[0.253, 0.253],[-0.253, 0.253],[-0.253, -0.253], [0.253, -0.253]]
+
+# maximum distance from obstacles that cost should be incurred
+inflation_radius: 0.1
+
+# list of sensors passing information to costmap
+observation_sources: laser_scan_sensor point_cloud_sensor
+
+laser_scan_sensor: {sensor_frame: base_link, data_type: LaserScan, topic: depth_scan,
+                    marking: true, clearing: true}
+
+point_cloud_sensor: {sensor_frame: base_link, data_type: PointCloud, topic: /point_cloud/cloud_registered,
+                      marking: true, clearing: true}
+                      
